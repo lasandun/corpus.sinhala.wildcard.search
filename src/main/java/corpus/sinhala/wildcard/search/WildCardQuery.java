@@ -30,31 +30,31 @@ public class WildCardQuery {
     }
     
     // do searching using the encoded stirng. Vowel sign problems won't occur
-    public LinkedList<String> wildCardSearchEncoded(String word, String core) {
+    public LinkedList<String> wildCardSearchEncoded(String word) {
         String encoded = new WordParser().encode(word);
         String query = "select?q=encoded:" + encoded + "&fl=content&rows=1400000";
-        LinkedList<String> wordList = execQuery(query, core);
+        LinkedList<String> wordList = execQuery(query);
         return wordList;
     }
     
     // simple wildcard search using solr
-    public LinkedList<String> wildCardSearch(String word, String core) {
+    public LinkedList<String> wildCardSearch(String word) {
         try {
             word = URLEncoder.encode(word, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(WildCardQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
         String query = "select?q=content:" + word + "&fl=content&rows=1400000";
-        LinkedList<String> wordList = execQuery(query, core);
+        LinkedList<String> wordList = execQuery(query);
         return wordList;
     }
     
     // execute given query and return result word list
-    private LinkedList<String> execQuery(String q, String core) {
+    private LinkedList<String> execQuery(String q) {
         LinkedList<String> matchingList = new LinkedList<String>();
         try {
             // create connection and query to Solr Server
-            URL query = new URL(serverUrl + "solr/" + core + "/" + q);
+            URL query = new URL(serverUrl + "solr/wildcard/" + q);
             URLConnection connection = query.openConnection();
             BufferedReader inputStream = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
             String line;

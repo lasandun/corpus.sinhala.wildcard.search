@@ -34,12 +34,12 @@ public class SolrWildCardSearch {
      * @param solrCore core the data to be sent
      * @throws IOException 
      */
-    public void updateSolrCore(String solrCore) throws IOException {
+    public void updateSolrCore() throws IOException {
         // creates summary file for appending
         File summaryFile = new File(SysProperty.getProperty("solrWildcardUploadSummaryFile"));
         writer = new PrintWriter(new FileOutputStream(summaryFile, true));
         writeLine("------------------------" + new Date().toString() + "----------------------");
-        writeLine("start updating solr core: " + solrCore);
+        writeLine("start updating solr core: " + "wildcard");
         
         // delete all xml files from xml directory before start creating xml files
         Util.deleteAllXMLs(SysProperty.getProperty("solrWildcardXMLPath"));
@@ -47,7 +47,7 @@ public class SolrWildCardSearch {
         
         // create xml files
         writeLine("creating xml files...");
-        XMLCreator x = new XMLCreator(solrCore);
+        XMLCreator x = new XMLCreator();
         LinkedList<String> rejectedWords = x.parseToXMLs();
         writeLine("\n\nrejected words:");
         for(String word : rejectedWords) {
@@ -57,8 +57,8 @@ public class SolrWildCardSearch {
         
         // clear the given core before uploading new data
         try {
-            Util.clearSolrDataAndIndexes(solrCore);
-            writeLine("solr core cleared: " + solrCore + "\n");
+            Util.clearSolrDataAndIndexes("wildcard");
+            writeLine("solr core cleared.\n");
         } catch (Exception ex) {
             Logger.getLogger(SolrWildCardSearch.class.getName()).log(Level.SEVERE, null, ex);
             return;
@@ -67,7 +67,7 @@ public class SolrWildCardSearch {
         XMLUploader uploader = new XMLUploader();
         writeLine("\nuploading starts...\n");
         
-        String summary = uploader.uploadXMLs(solrCore); // upload xml files
+        String summary = uploader.uploadXMLs(); // upload xml files
         
         writeLine(summary);
         writeLine("finished successfully\n\n\n");
@@ -81,24 +81,24 @@ public class SolrWildCardSearch {
      * @param useEncoded use encoded search if the true. Else do search on sinhala word
      * @return list of matching words
      */
-    public LinkedList<String> searchWord(String word, String core, boolean useEncoded) {
+    public LinkedList<String> searchWord(String word, boolean useEncoded) {
         WildCardQuery query = new WildCardQuery();
         
-        if(useEncoded) return query.wildCardSearchEncoded(word, core);
-        else           return query.wildCardSearch(word, core);
+        if(useEncoded) return query.wildCardSearchEncoded(word);
+        else           return query.wildCardSearch(word);
     }
     
     public static void main(String[] args) throws IOException, Exception {
         SolrWildCardSearch x = new SolrWildCardSearch();
         
         
-//        x.updateSolrCore("news");
+        x.updateSolrCore();
         
         
-        LinkedList<String> list = x.searchWord("විසි*", "news", true);
-        for(String s : list) {
-            System.out.println(s);
-        }
+//        LinkedList<String> list = x.searchWord("විසි*", true);
+//        for(String s : list) {
+//            System.out.println(s);
+//        }
     }
     
 }

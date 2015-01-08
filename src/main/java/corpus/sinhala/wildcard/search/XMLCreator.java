@@ -36,10 +36,10 @@ public class XMLCreator {
     
     private final boolean debug;
     
-    public XMLCreator(String solrCore) {
+    public XMLCreator() {
         parser = new WordParser();
         outputXMLDirPath = SysProperty.getProperty("solrWildcardXMLPath");
-        inputCVSFilePath = Util.refactorDirPath(SysProperty.getProperty("solrWildcardWordListPath")) + solrCore + ".csv";
+        inputCVSFilePath = SysProperty.getProperty("solrWildcardWordListPath");
         debug = SysProperty.getProperty("debug").equals("yes");
     }
     
