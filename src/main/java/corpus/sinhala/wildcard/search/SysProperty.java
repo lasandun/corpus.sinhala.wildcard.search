@@ -2,6 +2,8 @@ package corpus.sinhala.wildcard.search;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,9 +14,9 @@ import java.util.logging.Logger;
  */
 public class SysProperty {
     public static String getProperty(String key) {
-        FileInputStream fis = null;
+        InputStream fis = null;
         try {
-            fis = new FileInputStream("/home/" + System.getProperty("user.name") + "/solr/solr.properties");
+            fis = SysProperty.class.getClassLoader().getResourceAsStream( "solr.properties" );
             Properties p = new Properties();
             p.load(fis);
             return p.getProperty(key);
@@ -23,7 +25,7 @@ public class SysProperty {
             System.out.println("undefined property : "+ key);
             System.out.println();
             Logger.getLogger(SysProperty.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        }finally {
             try {
                 fis.close();
             } catch (IOException ex) {
