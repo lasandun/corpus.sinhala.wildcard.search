@@ -1,4 +1,4 @@
-package corpus.sinhala.corpus.sinhala.wildcard.search;
+package corpus.sinhala.wildcard.search;
 
 import java.io.File;
 import java.io.FileOutputStream;
