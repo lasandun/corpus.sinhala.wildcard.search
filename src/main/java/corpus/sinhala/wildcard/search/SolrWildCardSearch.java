@@ -77,7 +77,6 @@ public class SolrWildCardSearch {
     /**
      * 
      * @param word searching word (may include ? or * signs)
-     * @param core the solr core the query to be sent
      * @param useEncoded use encoded search if the true. Else do search on sinhala word
      * @return list of matching words
      */
