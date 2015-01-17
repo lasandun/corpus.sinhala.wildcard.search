@@ -31,7 +31,6 @@ public class SolrWildCardSearch {
      * Uploads xml files at directory - parsedXMLPath
      * Uses support of solr/example/post.jar - solrPostJarPath
      * Summary of post.jar written to summary file - solrWildcardUploadSummaryFile
-     * @param solrCore core the data to be sent
      * @throws IOException 
      */
     public void updateSolrCore() throws IOException {
@@ -94,7 +93,8 @@ public class SolrWildCardSearch {
         x.updateSolrCore();
         
         
-//        LinkedList<String> list = x.searchWord("විසි*", true);
+//        LinkedList<String> list = x.searchWord("විසි?", true);
+//        System.out.println("matching count: " + list.size());
 //        for(String s : list) {
 //            System.out.println(s);
 //        }

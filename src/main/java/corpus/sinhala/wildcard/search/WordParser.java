@@ -77,7 +77,7 @@ public class WordParser {
                 letterList.addLast(new SinhalaLetter("*"));
                 continue;
             } else if(c.equals("?")) {
-                letterList.addLast(new SinhalaLetter("?????"));
+                letterList.addLast(new SinhalaLetter("????"));
                 continue;
             }
             
