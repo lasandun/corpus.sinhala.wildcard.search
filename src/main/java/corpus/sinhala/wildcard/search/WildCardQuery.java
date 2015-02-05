@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -26,13 +27,13 @@ public class WildCardQuery {
     String serverUrl;
 
     public WildCardQuery() {
-        serverUrl = SysProperty.getProperty("solrServerURL");
+        serverUrl = "http://sinhala-corpus.projects.uom.lk/solr/";///SysProperty.getProperty("solrServerURL");
     }
     
     // do searching using the encoded stirng. Vowel sign problems won't occur
     public LinkedList<String> wildCardSearchEncoded(String word) {
         String encoded = new WordParser().encode(word);
-        String query = "select?q=encoded:" + encoded + "&fl=content&rows=1400000";
+        String query = "select?q=encoded:" + encoded + "&fl=content,frequency&rows=1400000";
         LinkedList<String> wordList = execQuery(query);
         return wordList;
     }
@@ -51,10 +52,26 @@ public class WildCardQuery {
     
     // execute given query and return result word list
     private LinkedList<String> execQuery(String q) {
-        LinkedList<String> matchingList = new LinkedList<String>();
+        class WordFreq implements Comparable<WordFreq>{
+            String word;
+            int freq;
+
+            public WordFreq(String word, int freq) {
+                this.word = word;
+                this.freq = freq;
+            }
+            
+            @Override
+            public int compareTo(WordFreq o) {
+                return (freq - o.freq);
+            }
+            
+        }
+        
+        LinkedList<WordFreq> resultList = new LinkedList<WordFreq>();
         try {
             // create connection and query to Solr Server
-            URL query = new URL(serverUrl + "solr/wildcard/" + q);
+            URL query = new URL(serverUrl + q);
             URLConnection connection = query.openConnection();
             BufferedReader inputStream = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
             String line;
@@ -70,9 +87,10 @@ public class WildCardQuery {
             Iterator docDocIter = resultDoc.getChildElements();
             while(docDocIter.hasNext()) {
                 OMElement docDoc = (OMElement) docDocIter.next();
-                OMElement word = docDoc.getFirstChildWithName(new QName("str"));
-                String w = word.getText();
-                matchingList.addLast(w);
+                Iterator strIterator = docDoc.getChildElements();
+                OMElement word = (OMElement) strIterator.next();
+                OMElement freq = (OMElement) strIterator.next();
+                resultList.addLast(new WordFreq(word.getText(), Integer.parseInt(freq.getText())));
             }
         } catch (XMLStreamException ex) {
             Logger.getLogger(WildCardQuery.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,7 +99,14 @@ public class WildCardQuery {
         } catch(IOException ex) {
             Logger.getLogger(WildCardQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return matchingList;
+        
+        Collections.sort(resultList, Collections.reverseOrder()); // sort by frequency
+        LinkedList<String> sortedMatchingList = new LinkedList<>();
+        for(WordFreq wordFreqObj : resultList) {
+            sortedMatchingList.addLast(wordFreqObj.word);
+        }
+        
+        return sortedMatchingList;
     }
     
 }
