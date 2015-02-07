@@ -45,14 +45,14 @@ public class WildCardQuery {
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(WildCardQuery.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String query = "select?q=content:" + word + "&fl=content&rows=1400000";
+        String query = "select?q=content:" + word + "&fl=content,frequency&rows=1400000";
         LinkedList<String> wordList = execQuery(query);
         return wordList;
     }
     
     // execute given query and return result word list
     private LinkedList<String> execQuery(String q) {
-        class WordFreq implements Comparable<WordFreq>{
+        class WordFreq implements Comparable<WordFreq> {
             String word;
             int freq;
 
