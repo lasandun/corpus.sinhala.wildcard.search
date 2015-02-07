@@ -13,18 +13,18 @@ import org.junit.Before;
  *
  * @author lahiru
  */
-public class TestWildcardQuery {
+public class TestWildcardQueryDecoded {
     InputStream is;
     BufferedReader br;
     
     @Before
     public void before() {
-        is = TestWordParser.class.getClassLoader().getResourceAsStream("wildcardQuery.txt");
+        is = TestWordParser.class.getClassLoader().getResourceAsStream("wildcardQueryDecoded.txt");
         br = new BufferedReader(new InputStreamReader(is));
     }
     
     @org.junit.Test
-    public void testWordTokenizer() throws IOException {
+    public void testWildcardQueryNonDecoded() throws IOException {
         String line;
         WildCardQuery wildcardQuery = new WildCardQuery();
         while((line = br.readLine()) != null) {
