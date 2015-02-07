@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -33,6 +35,7 @@ public class XMLCreator {
     private WordParser parser;
     private final String outputXMLDirPath;
     private final String inputCVSFilePath;
+    private InputStream inputStream;
     
     private final boolean debug;
     
@@ -61,7 +64,15 @@ public class XMLCreator {
         acceptedWordCount  = 0;
         
         int count = 0;
-        BufferedReader br = new BufferedReader(new FileReader(inputCVSFilePath));
+        BufferedReader br;
+        
+        if(inputStream == null) {
+            br = new BufferedReader(new FileReader(inputCVSFilePath));
+        }
+        else { // for testing purposes
+            br = new BufferedReader(new InputStreamReader(inputStream));
+        }
+        
         String line;
         LinkedList<String> rejectedWords = new LinkedList<String>();
         
@@ -74,7 +85,6 @@ public class XMLCreator {
                 String id   = parts[0];
                 String word = parts[1];
                 String freq = parts[2];
-
                 addWord(id, word, freq);
                 ++count;
                 acceptedWordCount++;
@@ -155,6 +165,11 @@ public class XMLCreator {
         XMLStreamWriter writer = XMLOutputFactory2.newInstance().createXMLStreamWriter(out);
         root.serialize(writer);
         writer.flush();
+    }
+    
+    // for testing purposes. set the path of CSV file to test/resources/words.csv
+    public void setTestCSVPath() {
+        inputStream = XMLCreator.class.getClassLoader().getResourceAsStream("words.csv");
     }
     
 }
