@@ -29,7 +29,7 @@ public class XMLUploader {
     */
     public String uploadXMLs() throws IOException {
         String serverURL = SysProperty.getProperty("solrServerURL");
-        String sysVariable = " -Durl=" + serverURL + "solr/wildcard/update "; // check -h of post.jar
+        String sysVariable = " -Durl=" + serverURL + "update "; // check -h of post.jar
         String command = java + sysVariable + " -jar " + solrPostJarPath + " " + Util.refactorDirPath(xmlDir) + "*.xml";
         if(debug) System.out.println("command: " + command);
         Process p = Runtime.getRuntime().exec(new String[]{"bash", "-c", command});

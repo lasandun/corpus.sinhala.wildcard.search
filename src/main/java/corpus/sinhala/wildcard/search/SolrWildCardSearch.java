@@ -60,7 +60,6 @@ public class SolrWildCardSearch {
             writeLine("solr core cleared.\n");
         } catch (Exception ex) {
             Logger.getLogger(SolrWildCardSearch.class.getName()).log(Level.SEVERE, null, ex);
-            return;
         }
         
         XMLUploader uploader = new XMLUploader();
