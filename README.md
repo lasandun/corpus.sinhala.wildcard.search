@@ -1,1 +1,24 @@
 # corpus.sinhala.wildcard.search
+
+<H5>Installation </H5>
+
+* clone and build https://github.com/lasandun/corpus.sinhala.wildcard.search
+
+* Install dependancies by command mvn install at project root directory
+
+* Build project using mvn clean install
+
+* Edit the solr.properties file as required specifying the paths and URLs.
+
+	solrPostJarPath=/home/user/solr-4.9.0/example/exampledocs/post.jar
+	solrServerURL=http://sinhala-corpus.projects.uom.lk/solr/
+	java=java
+	solrWildcardWordListPath=/home/user/words.csv
+	solrWildcardXMLPath=/home/user/solr/parsedXMLDir/
+	solrWildcardUploadSummaryFile=/home/user/solrUploadSummary.txt
+	parsedXMLPath=/home/user/solr/parsed/
+	solrWildcardEncodedLetterSeparator=a
+	debug=no
+
+Now you are ready to use corpus.sinhala.wildcard.search.
+
