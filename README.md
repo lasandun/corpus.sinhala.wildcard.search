@@ -4,9 +4,7 @@
 
 * clone and build https://github.com/lasandun/corpus.sinhala.wildcard.search
 
-* Install dependancies by command mvn install at project root directory
-
-* Build project using mvn clean install
+* Install dependancies and build project by command "mvn clean install" at project root directory
 
 * Edit the solr.properties file as required specifying the paths and URLs.
 
