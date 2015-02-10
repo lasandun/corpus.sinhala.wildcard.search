@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
 public class WildCardQuery {
     
     String serverUrl;
-    final static Logger logger = Logger.getLogger(PLSQLClient.class);
+    final static Logger logger = Logger.getLogger(WildCardQuery.class);
 
     public WildCardQuery() {
         serverUrl = "http://sinhala-corpus.projects.uom.lk/solr/";///SysProperty.getProperty("solrServerURL");
