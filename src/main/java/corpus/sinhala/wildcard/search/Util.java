@@ -13,9 +13,8 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.Normalizer;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -26,6 +25,7 @@ public class Util {
     String yansaya = "්" + "\u200d" + "ය"; // letter + yansaya + pillama
     String rakaraya = "්" + "\u200d" + "ර"; // letter + rakaraya + pillama
     String repaya = "ර" + "්" + "\u200d"; // repaya + letter
+    final static Logger logger = Logger.getLogger(Util.class);
     
     public static String refactorDirPath(String path) {
         if (path.charAt(path.length() - 1) != '/') {
@@ -88,11 +88,11 @@ public class Util {
                 content += line;
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         } catch (IOException ex) {
-            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         }
         return content;
     }
@@ -108,7 +108,7 @@ public class Util {
             String s2 = new String(s1.replaceAll(regex, "").getBytes("ascii"), "ascii");
             return s2;
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         }
         return null;
     }
@@ -169,7 +169,7 @@ public class Util {
             }
             inputStream.close();
         } catch(IOException ex) {
-            Logger.getLogger(WildCardQuery.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         } 
     }
     

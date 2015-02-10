@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,6 +15,7 @@ import java.util.logging.Logger;
 public class SolrWildCardSearch {
     
     private PrintWriter writer;
+    final static Logger logger = Logger.getLogger(SolrWildCardSearch.class);
     
     private void writeLine(String s) {
         writer.write(s + "\n");
@@ -59,7 +59,7 @@ public class SolrWildCardSearch {
             Util.clearSolrDataAndIndexes("wildcard");
             writeLine("solr core cleared.\n");
         } catch (Exception ex) {
-            Logger.getLogger(SolrWildCardSearch.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         }
         
         XMLUploader uploader = new XMLUploader();
@@ -88,15 +88,12 @@ public class SolrWildCardSearch {
     public static void main(String[] args) throws IOException, Exception {
         SolrWildCardSearch x = new SolrWildCardSearch();
         
+        if(args.length == 1) {
+            if(args[0].equals("update")) {
+                x.updateSolrCore();
+            }
+        }
         
-        x.updateSolrCore();
-        
-        
-//        LinkedList<String> list = x.searchWord("විසි?", true);
-//        System.out.println("matching count: " + list.size());
-//        for(String s : list) {
-//            System.out.println(s);
-//        }
     }
     
 }

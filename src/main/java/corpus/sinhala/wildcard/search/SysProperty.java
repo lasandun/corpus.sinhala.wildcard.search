@@ -3,14 +3,16 @@ package corpus.sinhala.wildcard.search;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author lahiru
  */
 public class SysProperty {
+    
+    final static Logger logger = Logger.getLogger(SysProperty.class);
+    
     public static String getProperty(String key) {
         InputStream fis = null;
         try {
@@ -19,15 +21,13 @@ public class SysProperty {
             p.load(fis);
             return p.getProperty(key);
         } catch (IOException ex) {
-            System.out.println();
-            System.out.println("undefined property : "+ key);
-            System.out.println();
-            Logger.getLogger(SysProperty.class.getName()).log(Level.SEVERE, null, ex);
+            logger.info("\n " + "Undefined key: " + key + "\n");
+            logger.error(ex);
         }finally {
             try {
                 fis.close();
             } catch (IOException ex) {
-                Logger.getLogger(SysProperty.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             }
         }
         return null;

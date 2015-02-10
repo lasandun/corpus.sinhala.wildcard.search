@@ -11,12 +11,11 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -25,6 +24,7 @@ import org.apache.axiom.om.util.AXIOMUtil;
 public class WildCardQuery {
     
     String serverUrl;
+    final static Logger logger = Logger.getLogger(PLSQLClient.class);
 
     public WildCardQuery() {
         serverUrl = "http://sinhala-corpus.projects.uom.lk/solr/";///SysProperty.getProperty("solrServerURL");
@@ -43,7 +43,7 @@ public class WildCardQuery {
         try {
             word = URLEncoder.encode(word, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(WildCardQuery.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         }
         String query = "select?q=content:" + word + "&fl=content,frequency&rows=1400000";
         LinkedList<String> wordList = execQuery(query);
@@ -93,11 +93,11 @@ public class WildCardQuery {
                 resultList.addLast(new WordFreq(word.getText(), Integer.parseInt(freq.getText())));
             }
         } catch (XMLStreamException ex) {
-            Logger.getLogger(WildCardQuery.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         } catch(MalformedURLException ex) {
-            Logger.getLogger(WildCardQuery.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         } catch(IOException ex) {
-            Logger.getLogger(WildCardQuery.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         }
         
         Collections.sort(resultList, Collections.reverseOrder()); // sort by frequency

@@ -9,8 +9,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import org.apache.axiom.om.OMAbstractFactory;
@@ -18,6 +16,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import javax.xml.stream.XMLStreamWriter;
 import org.codehaus.stax2.XMLOutputFactory2;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -38,6 +37,7 @@ public class XMLCreator {
     private InputStream inputStream;
     
     private final boolean debug;
+    final static Logger logger = Logger.getLogger(XMLCreator.class);
     
     public XMLCreator() {
         parser = new WordParser();
@@ -95,9 +95,9 @@ public class XMLCreator {
                         if(debug) System.out.println("wrote" + fileCount);
                         writeToFile(outputXMLDirPath + fileCount + ".xml");
                     } catch (FileNotFoundException ex) {
-                        Logger.getLogger(XMLCreator.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.error(ex);
                     } catch (XMLStreamException ex) {
-                        Logger.getLogger(XMLCreator.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.error(ex);
                     }
                     fileCount++;
                     count = 0;
@@ -118,9 +118,9 @@ public class XMLCreator {
                 if(debug) System.out.println("exception at line:" + line);
                 writeToFile(outputXMLDirPath + fileCount + ".xml");
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(XMLCreator.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             } catch (XMLStreamException ex) {
-                Logger.getLogger(XMLCreator.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             }
         }
         br.close();
